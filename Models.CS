@@ -41,7 +41,7 @@ namespace SmartDeliveryManagementSystem
                         trackingCode = value;
                 }
             }
-                public string Description
+            public string Description
             {
                 get => description;
                 set
@@ -112,7 +112,73 @@ namespace SmartDeliveryManagementSystem
                 Console.WriteLine($"Estimated Cost: {EstimatedCost} EGP");
             }
 
+
+            // 3. DeliveryCenter Struct
+            public struct DeliveryCenter
+            {
+                private Shipment[] shipments;
+                private int count;
+
+                public DeliveryCenter()
+                {
+                    shipments = new Shipment[10];
+                    count = 0;
+                }
+
+                // Integer Indexer
+                public Shipment this[int index]
+                {
+                    get
+                    {
+                        if (shipments != null && index >= 0 && index < count)
+                            return shipments[index];
+                        return default;
+                    }
+                    set
+                    {
+                        if (shipments != null && index >= 0 && index < count)
+                            shipments[index] = value;
+                    }
+                }
+
+                // String Indexer 
+
+                public Shipment? this[string trackingCode]
+                {
+                    get
+                    {
+                        if (shipments == null) return null;
+
+                        for (int i = 0; i < count; i++)
+                        {
+                            if (shipments[i].TrackingCode.Equals(trackingCode, StringComparison.OrdinalIgnoreCase))
+                            {
+                                return shipments[i];
+                            }
+                        }
+                        return null;
+                    }
+                }
+
+                // AddShipment Method
+                public bool AddShipment(Shipment shipment)
+                {
+                    if (shipments == null)
+                    {
+                        shipments = new Shipment[10];
+                        count = 0;
+                    }
+
+                    if (count < shipments.Length)
+                    {
+                        shipments[count] = shipment;
+                        count++;
+                        return true;
+                    }
+                    return false;
+                }
+
+            }
         }
-        
     }
 }
